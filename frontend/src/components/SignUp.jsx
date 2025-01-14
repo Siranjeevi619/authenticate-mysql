@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 // import { useSearchParams } from "react-router";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 function SignUpCard({ displayCard }) {
-  //   const [userName, setUserName] = useState("");
-  //   const [userMail, setUserMail] = useState("");
-  //   const [password, setPassword] = useState("");
+ 
   const [userInfo, setUserInfo] = useState({
     userName: "",
     email: "",
@@ -31,6 +30,10 @@ function SignUpCard({ displayCard }) {
         text: "password wont match ",
       });
     }
+    axios
+      .post("http://localhost:6969/auth/signup", userInfo)
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error));
   };
   return (
     <div

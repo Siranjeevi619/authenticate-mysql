@@ -8,17 +8,7 @@ function HomePage() {
   const handleDisplay = () => {
     setIsSignUp((prev) => !prev);
   };
-  return (
-    <div>
-      <Navbar />
-      {/* <LoginCard /> */}
-      {isSignUp ? (
-        <SignUpCard displayCard={handleDisplay} />
-      ) : (
-        <LoginCard displayCard={handleDisplay} />
-      )}
-    </div>
-  );
+  return <div></div>;
 }
 
 export default HomePage;

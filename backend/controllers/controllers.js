@@ -39,4 +39,24 @@ router.get("/users", (request, response) => {
   });
 });
 
+router.post("/login", (req, res) => {
+  const sql = "Select name from users where email=? and password=?";
+  const { email, password } = req.body;
+  db.query(sql, [email, password], (error, data) => {
+    if (error) {
+      return res.status(500).json({
+        error,
+      });
+    }
+    if (data.length > 0) {
+      return res
+        .status(200)
+        .json({ message: "user login success", data, userFound: true });
+    }
+    return res
+      .status(401)
+      .json({ message: "user does not exist", data, userFound: false });
+  });
+});
+
 module.exports = router;

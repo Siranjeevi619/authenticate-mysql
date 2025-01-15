@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 function LoginCard({ displayCard }) {
+  // const [userData, setUserData] = useState([]);
+  const [isUser, setIsUser] = useState(false);
   const [userCredentials, setUserCredentials] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate("");
 
   const handleCredentailChange = (event) => {
     const { name, value } = event.target;
@@ -16,8 +22,37 @@ function LoginCard({ displayCard }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http:localhost:6969/auth/login')
+    axios
+      .post("http://localhost:6969/auth/login", userCredentials)
+      .then((res) => {
+        setIsUser(res.data.userFound);
+        console.log(isUser);
+        if (isUser) {
+          Swal.fire({
+            title: "Login successfully",
+            text: "User authenticated",
+            icon: "success",
+          }).then(() => {
+            navigate("/users");
+          });
+        } else {
+          Swal.fire({
+            title: "Login failed",
+            text: "User not found",
+            icon: "error",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        Swal.fire({
+          title: "Error",
+          text: "An error occurred during login",
+          icon: "error",
+        });
+      });
   };
+
   return (
     <div
       className="d-flex justify-content-center align-items-center vh-100 pb-5"
